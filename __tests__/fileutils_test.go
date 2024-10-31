@@ -33,3 +33,10 @@ func TestWriteFile(t *testing.T) {
 	fileutils.Mkdir("../.tmp")
 	fileutils.WriteFile("../.tmp/test.txt", []byte("hello world"))
 }
+
+func TestCopyDir(t *testing.T) {
+	fileutils.CopyDir("../.tmp", "../.tmp2")
+	if fileutils.IsDir("../.tmp2") == false {
+		t.Error("not a dir")
+	}
+}
