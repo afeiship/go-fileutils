@@ -21,9 +21,15 @@ func TestRmRf(t *testing.T) {
 	}
 }
 
-func TestGetContents(t *testing.T) {
-	res := fileutils.GetContents("../README.md")
+func TestReadContents(t *testing.T) {
+	res := fileutils.ReadContents("../README.md")
 	if strings.Contains(res, ("# go-fileutils")) == false {
 		t.Error("not contains")
 	}
+}
+
+func TestWriteFile(t *testing.T) {
+	// mkdir
+	fileutils.Mkdir("../.tmp")
+	fileutils.WriteFile("../.tmp/test.txt", []byte("hello world"))
 }

@@ -49,6 +49,6 @@ func IsDir(path string) bool {
 	return info.IsDir()
 }
 
-func MkdirP(path string) error {
+func Mkdir(path string) error {
 	return os.MkdirAll(path, 0755)
 }
