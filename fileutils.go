@@ -142,3 +142,8 @@ func CopyFile(srcFile string, destFile string) error {
 	}
 	return os.Chmod(destFile, srcInfo.Mode())
 }
+
+// 创建软链接
+func Ln(src string, dst string) error {
+	return os.Symlink(src, dst)
+}
