@@ -1,14 +1,9 @@
 package fileutils
 
 import (
-	"fmt"
 	"log"
 	"os"
 )
-
-func SayHi() {
-	fmt.Println("Hi from fileutils")
-}
 
 func ReadFile(filename string) []byte {
 	res, err := os.ReadFile(filename)
@@ -16,4 +11,8 @@ func ReadFile(filename string) []byte {
 		log.Fatalf("Error reading file: %v", err)
 	}
 	return res
+}
+
+func RmRf(path string) error {
+	return os.RemoveAll(path)
 }
