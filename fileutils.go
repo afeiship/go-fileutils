@@ -154,12 +154,24 @@ func IsLink(path string) bool {
 	return err == nil
 }
 
-func BaseDir() string {
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+func Basename(path string) string {
+	return filepath.Base(path)
+}
+
+func Dirname(path string) string {
+	return filepath.Dir(path)
+}
+
+func Extname(path string) string {
+	return filepath.Ext(path)
+}
+
+func Absname(path string) string {
+	abs, err := filepath.Abs(path)
 	if err != nil {
 		log.Fatal(err)
 	}
-	return dir
+	return abs
 }
 
 func HomeDir() string {

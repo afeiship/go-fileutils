@@ -1,6 +1,8 @@
 package nx
 
 import (
+	"os"
+	"path"
 	"strings"
 	"testing"
 
@@ -45,5 +47,28 @@ func TestLn(t *testing.T) {
 	fileutils.Ln("../.tmp", "../.tmp3")
 	if fileutils.IsLink("../.tmp3") == false {
 		t.Error("not a link")
+	}
+}
+
+func TestBasename(t *testing.T) {
+	res := fileutils.Basename("../README.md")
+	if res != "README.md" {
+		t.Error("not equal")
+	}
+}
+
+func TestDirname(t *testing.T) {
+	res := fileutils.Dirname("../README.md")
+	t.Log(res)
+	if res != ".." {
+		t.Error("not equal")
+	}
+}
+func TestAbsname(t *testing.T) {
+	res := fileutils.Absname("../README.md")
+	cwd, _ := os.Getwd()
+	t.Log(res)
+	if res != path.Join(cwd, "../README.md") {
+		t.Error("not equal")
 	}
 }
