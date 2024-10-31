@@ -40,3 +40,10 @@ func TestCopyDir(t *testing.T) {
 		t.Error("not a dir")
 	}
 }
+
+func TestLn(t *testing.T) {
+	fileutils.Ln("../.tmp", "../.tmp3")
+	if fileutils.IsLink("../.tmp3") == false {
+		t.Error("not a link")
+	}
+}

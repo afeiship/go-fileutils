@@ -144,6 +144,12 @@ func CopyFile(srcFile string, destFile string) error {
 }
 
 // 创建软链接
-func Ln(src string, dst string) error {
-	return os.Symlink(src, dst)
+func Ln(src string, dst string) bool {
+	err := os.Symlink(src, dst)
+	return err != nil
+}
+
+func IsLink(path string) bool {
+	_, err := os.Lstat(path)
+	return err == nil
 }
