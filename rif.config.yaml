@@ -1,0 +1,14 @@
+name: golang-library
+files:
+  - '*.go'
+  - '.*'
+  - '*'
+  - '!node_modules'
+  - '!rif.config.yaml'
+replacements:
+  - from: /pkgjson/g
+    to: ${PROJECT_NAME}
+  - from: /golang-library/g
+    to: ${PROJECT_NAME}
+  - from: /pkgjson-description/g
+    to: Fileutils for go.
