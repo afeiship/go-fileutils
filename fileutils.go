@@ -14,10 +14,7 @@ func ReadFile(filename string) []byte {
 }
 
 func GetContents(filename string) string {
-	res, err := os.ReadFile(filename)
-	if err != nil {
-		log.Fatalf("Error reading file: %v", err)
-	}
+	res := ReadFile(filename)
 	return string(res)
 }
 
