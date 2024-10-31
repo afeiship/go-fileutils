@@ -169,3 +169,7 @@ func HomeDir() string {
 	}
 	return home
 }
+
+func Join(elem ...string) string {
+	return filepath.Join(elem...)
+}
