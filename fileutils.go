@@ -1,6 +1,7 @@
 package fileutils
 
 import (
+	"io"
 	"log"
 	"os"
 )
@@ -51,4 +52,37 @@ func IsDir(path string) bool {
 
 func Mkdir(path string) error {
 	return os.MkdirAll(path, 0755)
+}
+
+func Chdir(path string) error {
+	return os.Chdir(path)
+}
+
+func Exists(path string) bool {
+	_, err := os.Stat(path)
+	return err == nil
+}
+
+func Mv(oldpath, newpath string) error {
+	return os.Rename(oldpath, newpath)
+}
+
+func Cp(src, dst string) error {
+	in, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer in.Close()
+
+	out, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	_, err = io.Copy(out, in)
+	if err != nil {
+		return err
+	}
+	return out.Close()
 }
