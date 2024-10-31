@@ -13,9 +13,20 @@ func ReadFile(filename string) []byte {
 	return res
 }
 
-func GetContents(filename string) string {
+func WriteFile(filename string, data []byte) {
+	err := os.WriteFile(filename, data, 0644)
+	if err != nil {
+		log.Fatalf("Error writing file: %v", err)
+	}
+}
+
+func ReadContents(filename string) string {
 	res := ReadFile(filename)
 	return string(res)
+}
+
+func WriteContents(filename string, data string) {
+	WriteFile(filename, []byte(data))
 }
 
 func RmRf(path string) error {
