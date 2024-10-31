@@ -1,9 +1,11 @@
 package fileutils
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 )
 
 func ReadFile(filename string) []byte {
@@ -58,31 +60,85 @@ func Chdir(path string) error {
 	return os.Chdir(path)
 }
 
-func Exists(path string) bool {
+func IsExists(path string) bool {
 	_, err := os.Stat(path)
 	return err == nil
 }
 
-func Mv(oldpath, newpath string) error {
+func Rename(oldpath, newpath string) error {
 	return os.Rename(oldpath, newpath)
 }
 
-func Cp(src, dst string) error {
-	in, err := os.Open(src)
+// CopyDir 递归复制目录 src 到 dst
+func CopyDir(src string, dst string) error {
+	// 获取源目录信息
+	srcInfo, err := os.Stat(src)
 	if err != nil {
 		return err
 	}
-	defer in.Close()
 
-	out, err := os.Create(dst)
-	if err != nil {
-		return err
+	// 确保源路径是目录
+	if !srcInfo.IsDir() {
+		return fmt.Errorf("source is not a directory")
 	}
-	defer out.Close()
 
-	_, err = io.Copy(out, in)
+	// 创建目标目录
+	err = os.MkdirAll(dst, srcInfo.Mode())
 	if err != nil {
 		return err
 	}
-	return out.Close()
+
+	// 遍历源目录
+	err = filepath.Walk(src, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// 计算目标路径
+		relPath, err := filepath.Rel(src, path)
+		if err != nil {
+			return err
+		}
+		destPath := filepath.Join(dst, relPath)
+
+		if info.IsDir() {
+			// 创建子目录
+			return os.MkdirAll(destPath, info.Mode())
+		} else {
+			// 复制文件
+			return CopyFile(path, destPath)
+		}
+	})
+
+	return err
+}
+
+// copyFile 复制单个文件
+func CopyFile(srcFile string, destFile string) error {
+	// 打开源文件
+	src, err := os.Open(srcFile)
+	if err != nil {
+		return err
+	}
+	defer src.Close()
+
+	// 创建目标文件
+	dst, err := os.Create(destFile)
+	if err != nil {
+		return err
+	}
+	defer dst.Close()
+
+	// 复制内容
+	_, err = io.Copy(dst, src)
+	if err != nil {
+		return err
+	}
+
+	// 获取文件权限并应用到目标文件
+	srcInfo, err := os.Stat(srcFile)
+	if err != nil {
+		return err
+	}
+	return os.Chmod(destFile, srcInfo.Mode())
 }
