@@ -153,3 +153,19 @@ func IsLink(path string) bool {
 	_, err := os.Lstat(path)
 	return err == nil
 }
+
+func BaseDir() string {
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		log.Fatal(err)
+	}
+	return dir
+}
+
+func HomeDir() string {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return home
+}
